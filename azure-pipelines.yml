@@ -6,14 +6,25 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: DeployToVM
+  displayName: "Deploy a VM"
+  jobs:
+  - deployment: InstallApacheAndConfigure
+    displayName: "Instalar Apache y configurar página"
+    environment:
+      name: "admin-vm-s2-devops"      
+      resourceType: VirtualMachine     
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo "Iniciando la instalación de Apache"
+              sudo apt-get update
+              sudo apt-get install -y apache2
+              echo "Hola, configurado desde el pipeline la VM" | sudo tee /var/www/html/index.html
+              sudo systemctl restart apache2
+              echo "Instalación completa"
+            displayName: "Instalar Apache y configurar index.html"
+              
