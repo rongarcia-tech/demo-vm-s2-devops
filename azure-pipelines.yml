@@ -8,14 +8,9 @@ trigger:
 
 stages:
 - stage: DeployToVM
-  displayName: "Deploy a VM"
   jobs:
   - deployment: InstallApacheAndConfigure
-    displayName: "Instalar Apache y configurar página"
-    environment:
-      name: "admin-vm-s2-devops"
-      resourceType: VirtualMachine
-      resourceName: "admin-vm-s2-devops"  
+    environment: "admin-vm-s2-devops"
     strategy:
       runOnce:
         deploy:
@@ -29,5 +24,3 @@ stages:
               sudo systemctl restart apache2
               echo "Instalación completa"
             displayName: "Instalar Apache y configurar index.html"
-
-              
