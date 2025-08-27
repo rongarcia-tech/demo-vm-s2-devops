@@ -13,7 +13,7 @@ stages:
   - deployment: InstallApacheAndConfigure
     displayName: "Instalar Apache y configurar página"
     environment:
-      name: "Admin-vm-s2-devops"      
+      name: "admin-vm-s2-devops"      
       resourceType: VirtualMachine     
     strategy:
       runOnce:
