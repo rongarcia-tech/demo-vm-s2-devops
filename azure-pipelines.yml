@@ -13,8 +13,9 @@ stages:
   - deployment: InstallApacheAndConfigure
     displayName: "Instalar Apache y configurar página"
     environment:
-      name: "admin-vm-s2-devops"      
-      resourceType: VirtualMachine     
+      name: "admin-vm-s2-devops"
+      resourceType: VirtualMachine
+      resourceName: "admin-vm-s2-devops"  
     strategy:
       runOnce:
         deploy:
@@ -24,7 +25,9 @@ stages:
               sudo apt-get update
               sudo apt-get install -y apache2
               echo "Hola, configurado desde el pipeline la VM" | sudo tee /var/www/html/index.html
+              sudo systemctl enable apache2
               sudo systemctl restart apache2
               echo "Instalación completa"
             displayName: "Instalar Apache y configurar index.html"
+
               
