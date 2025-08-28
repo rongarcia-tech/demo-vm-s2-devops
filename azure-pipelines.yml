@@ -1,29 +1,22 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 trigger:
 - main
 
 stages:
 - stage: DeployToVM
   jobs:
-  - job: DeployViaSSH
-    displayName: "Deploy a VM por SSH"
-    steps:
-    - task: SSH@0
-      displayName: "Instalar Apache y actualizar index en la VM"
-      inputs:
-        sshEndpoint: 'MySshConnection'
-        runOptions: inline
-        inline: |
-          set -e
-          sudo apt-get update
-          sudo apt-get install -y apache2
-          echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>OK</title></head><body><h1>Hola desde el pipeline 🎉</h1></body></html>' | sudo tee /var/www/html/index.html
-          sudo systemctl enable apache2
-          sudo systemctl restart apache2
-          # Verificar desde la VM
-          echo "----- curl local -----"
-          curl -s http://localhost/ | head -n 5
+  - deployment: InstallApacheAndConfigure
+    environment: "admin-vm-s2-devops"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo "Iniciando la instalación de Apache2"
+              sudo apt-get update
+              sudo apt-get install -y apache2
+              echo "Hola, configurado desde el pipeline la VM" | sudo tee /var/www/html/index.html
+              sudo systemctl enable apache2
+              sudo systemctl restart apache2
+              echo "Instalación completa"
+            displayName: "Instalar Apache y configurar index.html"
 
