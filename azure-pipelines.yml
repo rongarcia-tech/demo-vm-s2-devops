@@ -16,7 +16,7 @@ stages:
         deploy:
           steps:
           - script: |
-              echo "Iniciando la instalación de Apache"
+              echo "Iniciando la instalación de Apache2"
               sudo apt-get update
               sudo apt-get install -y apache2
               echo "Hola, configurado desde el pipeline la VM" | sudo tee /var/www/html/index.html
